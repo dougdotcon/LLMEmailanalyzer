@@ -1,0 +1,7 @@
+Flask==2.1.0
+Flask-OAuthlib==0.9.6
+pdfkit==1.0.0
+WeasyPrint==59.0
+mailbox==0.4
+langchain==0.0.285
+flask_cors==3.0.10

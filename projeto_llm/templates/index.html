@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Query Interface</title>
+    <style>
+        /* Paleta de cores pastéis */
+        :root {
+            --primary-color: #FFB6B9;
+            --secondary-color: #FFD2DA;
+            --tertiary-color: #FFEEF1;
+            --text-color: #333;
+            --btn-color: #FFA3A7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tertiary-color);
+            font-family: Arial;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+            width: 1000px;
+            height: 700px;
+            background: var(--primary-color);
+            margin: 0 auto;
+            font-size: 0;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.688), 0 6px 20px 0 rgba(0, 0, 0, 0.315);
+        }
+
+        main {
+            width: 100%;
+            height: 700px;
+            display: inline-block;
+            font-size: 15px;
+            vertical-align: top;
+            border: 5px solid var(--secondary-color);
+        }
+
+        main header {
+            height: 110px;
+            padding: 30px 20px 30px 40px;
+            background-color: var(--secondary-color);
+        }
+
+        main header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        #chat {
+            padding-left: 0;
+            margin: 0;
+            list-style-type: none;
+            overflow-y: scroll;
+            height: 435px;
+            border-top: 2px solid var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        #chat li {
+            padding: 10px 30px;
+        }
+
+        #chat h2,
+        #chat h3 {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        #chat .message {
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 25px;
+            max-width: 90%;
+            display: inline-block;
+            text-align: left;
+            border-radius: 5px;
+            background-color: var(--secondary-color);
+        }
+
+        main footer {
+            height: 155px;
+            padding: 20px 30px 10px 20px;
+            background-color: var(--secondary-color);
+        }
+
+        main footer textarea {
+            resize: none;
+            border: none;
+            display: block;
+            width: 100%;
+            height: 70px;
+            border-radius: 3px;
+            padding: 20px;
+            font-size: 13px;
+            margin-bottom: 13px;
+            border: 1px solid var(--primary-color);
+        }
+
+        main footer textarea::placeholder {
+            color: var(--text-color);
+        }
+
+        main footer a {
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: var(--primary-color);
+            vertical-align: top;
+            margin-left: 80%;
+            margin-top: 5px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--btn-color);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        main footer a:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+
+<script>
+    function sendMessage() {
+        const chatList = document.getElementById('chat');
+        const textarea = document.querySelector('textarea');
+        const message = textarea.value;
+
+        // Criar elementos para exibir a mensagem
+        const li = document.createElement('li');
+        li.classList.add('me');
+
+        const divMessage = document.createElement('div');
+        divMessage.classList.add('message');
+        divMessage.textContent = message;
+
+        li.appendChild(divMessage);
+        chatList.appendChild(li);
+
+        // Limpar a área de texto
+        textarea.value = '';
+    }
+
+    function sendMessage() {
+    const chatList = document.getElementById('chat');
+    const textarea = document.querySelector('textarea');
+    const message = textarea.value;
+
+    // Display user's question
+    const userLi = document.createElement('li');
+    userLi.classList.add('me');
+
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.classList.add('message');
+    userMessageDiv.textContent = message;
+
+    userLi.appendChild(userMessageDiv);
+    chatList.appendChild(userLi);
+
+    // Make AJAX request to Flask API
+    fetch('/query', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const modelResponse = data.response;
+
+        // Display model's response
+        const modelLi = document.createElement('li');
+        modelLi.classList.add('bot');
+
+        const modelMessageDiv = document.createElement('div');
+        modelMessageDiv.classList.add('message');
+        modelMessageDiv.textContent = modelResponse;
+
+        modelLi.appendChild(modelMessageDiv);
+        chatList.appendChild(modelLi);
+    })
+    .catch(error => {
+        console.error('Error querying the model:', error);
+    });
+
+    // Clear the textarea
+    textarea.value = '';
+}
+
+</script>
+</head>
+
+<body>
+<div id="container">
+    <main>
+        <header>
+            <h2>LLM Query Interface</h2>
+        </header>
+        <ul id="chat">
+            <!-- Aqui serão exibidas as perguntas do usuário e as respostas do modelo -->
+        </ul>
+        <footer>
+            <textarea placeholder="Type your question"></textarea>
+            <a href="#" onclick="sendMessage()">Send</a>
+        </footer>
+    </main>
+</div>
+
+</html>
