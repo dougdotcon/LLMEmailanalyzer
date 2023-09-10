@@ -20,16 +20,16 @@ This project was born out of the idea to understand and analyze a user's email c
 ## Interface Screenshots
 
 ### Interface
-![Interface](./templates/interface.png)
+![Interface](.projeto-llm/templates/interface.png)
 
 ### Landing Page
-![Landing Page](./templates/landingpage.png)
+![Landing Page](.projeto-llm/templates/landingpage.png)
 
 ### Login Page
-![Login Page](./templates/loginpage.png)
+![Login Page](.projeto-llm/templates/loginpage.png)
 
 ### Signup Page
-![Signup Page](./templates/signuppage.png)
+![Signup Page](.projeto-llm/templates/signuppage.png)
 
 ## 1. Overview of the Algorithm Construction
 
